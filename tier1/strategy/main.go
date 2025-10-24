@@ -8,7 +8,7 @@ import "fmt"
 // Usage: Call from cmd/main.go or in tests to see all examples in action.
 func RunAllExamples() {
 	fmt.Println("╔════════════════════════════════════════════════════════════════╗")
-	fmt.Println("║          STRATEGY PATTERN - COMPREHENSIVE EXAMPLES            ║")
+	fmt.Println("║          STRATEGY PATTERN - COMPREHENSIVE EXAMPLES             ║")
 	fmt.Println("╚════════════════════════════════════════════════════════════════╝")
 
 	// Run all examples in sequence
@@ -18,9 +18,9 @@ func RunAllExamples() {
 	Example4_MultiplePaymentsWithDifferentMethods()
 	Example5_DynamicStrategySelection()
 	Example6_StrategyComparison()
-n
-	fmt.Println("\n╔════════════════════════════════════════════════════════════════╗")
-	fmt.Println("║                   EXAMPLES COMPLETED SUCCESSFULLY             ║")
+
+	fmt.Println("╔════════════════════════════════════════════════════════════════╗")
+	fmt.Println("║                   EXAMPLES COMPLETED SUCCESSFULLY              ║")
 	fmt.Println("╚════════════════════════════════════════════════════════════════╝")
 
 	fmt.Println("\n📝 Key Takeaways from Strategy Pattern:")

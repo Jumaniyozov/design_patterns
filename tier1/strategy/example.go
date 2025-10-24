@@ -243,7 +243,7 @@ func Example5_DynamicStrategySelection() {
 // Example6_StrategyComparison shows how the Strategy pattern eliminates
 // the need for conditional logic that would be required without the pattern.
 func Example6_StrategyComparison() {
-	fmt.Println("\n=== Example 6: Strategy Pattern vs Conditional Approach ===")
+	fmt.Println("=== Example 6: Strategy Pattern vs Conditional Approach ===")
 	fmt.Println("Why Strategy pattern is better than conditionals")
 
 	fmt.Println("--- WITHOUT Strategy Pattern (Bad) ---")
@@ -259,7 +259,7 @@ func processPaymentOld(method string, amount float64) {
     // Problems: violates SRP, OCP, hard to test, maintenance nightmare
 }`)
 
-	fmt.Println("\n--- WITH Strategy Pattern (Good) ---")
+	fmt.Println("--- WITH Strategy Pattern (Good) ---")
 	fmt.Println(`
 type PaymentStrategy interface {
     Process(amount float64) (txID string, err error)
