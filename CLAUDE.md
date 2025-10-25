@@ -52,53 +52,69 @@ go test -cover ./...
 
 ## Project Structure
 
-The project uses a tier-based, package-per-pattern structure organized by learning progression.
+The project follows the classic Gang of Four (GOF) categorization, organizing all 23 design patterns by their fundamental purpose: Creational, Structural, and Behavioral.
 
 ### Directory Hierarchy
 
 ```
 design_patterns/
-├── tier1/                    # Essential Go Patterns
-│   ├── strategy/
-│   ├── factory/
-│   ├── builder/
-│   ├── decorator/
-│   └── singleton/
-├── tier2/                    # Structural Patterns
-│   ├── adapter/
-│   ├── proxy/
-│   ├── composite/
-│   └── facade/
-├── tier3/                    # Behavioral Patterns
-│   ├── observer/
-│   ├── command/
-│   ├── chainofresponsibility/
-│   ├── templatemethod/
-│   └── state/
-└── tier4/                    # Concurrency and Advanced Patterns
-    ├── pipeline/
-    ├── fanout/
-    ├── workerpool/
-    ├── circuitbreaker/
-    └── options/
+└── gof_patterns/                    # All Gang of Four Patterns
+    ├── creational/                  # Object Creation Patterns
+    │   ├── singleton/               # Ensure one instance
+    │   ├── factory_method/          # Create objects via factory
+    │   ├── abstract_factory/        # Families of related objects
+    │   ├── builder/                 # Construct complex objects step-by-step
+    │   └── prototype/               # Clone existing objects
+    │
+    ├── structural/                  # Object Composition & Relationships
+    │   ├── adapter/                 # Convert interfaces
+    │   ├── bridge/                  # Separate abstraction from implementation
+    │   ├── composite/               # Tree structures of objects
+    │   ├── decorator/               # Add responsibilities dynamically
+    │   ├── facade/                  # Simplified interface to subsystem
+    │   ├── flyweight/               # Share objects to save memory
+    │   └── proxy/                   # Surrogate or placeholder
+    │
+    └── behavioral/                  # Object Interaction & Responsibility
+        ├── chain_of_responsibility/ # Pass requests along chain
+        ├── command/                 # Encapsulate requests as objects
+        ├── interpreter/             # Language grammar interpreter
+        ├── iterator/                # Sequential access to elements
+        ├── mediator/                # Centralize complex communications
+        ├── memento/                 # Capture and restore object state
+        ├── observer/                # Notify dependents of changes
+        ├── state/                   # Change behavior when state changes
+        ├── strategy/                # Encapsulate interchangeable algorithms
+        ├── template_method/         # Define algorithm skeleton
+        └── visitor/                 # Operations on object structure elements
 ```
 
 ### Pattern Package Structure
 
-Each design pattern should have its own directory within the appropriate tier with:
-- A `README.md` containing comprehensive pattern documentation
-- `pattern.go` or named pattern file (e.g., `strategy.go`) with core implementation
-- Concrete strategy/implementation files as needed
-- `example.go` or `_example_test.go` with runnable examples
-- Test files (e.g., `pattern_test.go`) when applicable
+Each design pattern has its own directory with a standard structure:
 
-Example for Strategy Pattern (Tier 1):
+**Required Files:**
+- `README.md` - Comprehensive pattern documentation
+- `{pattern_name}.go` - Core implementation (e.g., `singleton.go`, `adapter.go`, `strategy.go`)
+- `example.go` - Runnable examples demonstrating usage
+
+**Optional Files:**
+- `{pattern_name}_test.go` - Unit tests (when explicitly requested)
+
+Example for Singleton Pattern:
 ```
-tier1/strategy/
+creational/singleton/
 ├── README.md              # Pattern documentation
-├── pattern.go             # Core interfaces and strategies
-├── example.go             # Runnable examples
-└── pattern_test.go        # Tests (optional)
+├── singleton.go           # Core implementation
+└── example.go             # Runnable examples
+```
+
+Example for Strategy Pattern:
+```
+behavioral/strategy/
+├── README.md              # Pattern documentation
+├── strategy.go            # Core interfaces and implementations
+└── example.go             # Runnable examples
 ```
 
 ## Go Version
@@ -116,12 +132,15 @@ The project targets Go 1.25. Ensure compatibility with this version when adding 
 
 When asked to explain a design pattern:
 
-1. **Determine the Correct Tier and Location**
-   - Identify which tier the pattern belongs to (Tier 1, 2, 3, or 4) from the curriculum
-   - ALWAYS create/use the directory structure: `tier{N}/{pattern_name}/`
-   - NEVER create pattern folders in the root directory
-   - Example: Strategy Pattern → `tier1/strategy/`
-   - Example: Observer Pattern → `tier3/observer/`
+1. **Determine the Correct Category and Location**
+   - Identify which GOF category the pattern belongs to: **Creational**, **Structural**, or **Behavioral**
+   - ALWAYS use the directory structure: `design_patterns/gof_patterns/{category}/{pattern_name}/`
+   - NEVER create pattern folders in the root directory or outside the GOF structure
+   - Examples:
+     - Singleton → `design_patterns/gof_patterns/creational/singleton/`
+     - Adapter → `design_patterns/gof_patterns/structural/adapter/`
+     - Strategy → `design_patterns/gof_patterns/behavioral/strategy/`
+     - Observer → `design_patterns/gof_patterns/behavioral/observer/`
 
 2. **Check if pattern folder exists and is empty**
    - If the pattern folder doesn't exist or is empty, follow the complete documentation workflow below
@@ -148,26 +167,21 @@ When asked to explain a design pattern:
      - **Key Gotchas**: Common mistakes and pitfalls
 
 4. **Code Implementation**
-   - Create `pattern.go` containing the core pattern implementation with:
-     - Strategy/core interface definition
+   - Create `{pattern_name}.go` containing the core pattern implementation with:
+     - Core interface definition
      - Concrete implementations (at least 2-3 examples)
-     - Context/processor that uses the pattern
+     - Context/processor that uses the pattern (if applicable)
    - Create `example.go` with function-based runnable examples demonstrating:
      - Basic usage
      - Real-world scenarios from the README
      - How to switch between implementations
      - Export functions: `Example1_*`, `Example2_*`, etc.
-   - Create `main_test.go` containing:
-     - Integration tests for the pattern
-     - Tests for each concrete strategy
-     - Tests for strategy switching
-     - Validation error tests
+   - Tests are OPTIONAL unless explicitly requested:
+     - Create `{pattern_name}_test.go` only when asked
+     - Include unit tests for the pattern
+     - Tests for each concrete implementation
+     - Tests for edge cases and error handling
      - Performance/benchmark tests if applicable
-   - Create a `cmd/main.go` (if in root) or pattern-level `main.go` file to:
-     - Import and call all example functions from `example.go`
-     - Provide a runnable demonstration: `go run cmd/main.go`
-     - Show output from each example in sequence
-     - Make it easy for learners to execute and see results
 
 5. **Code Standards**
    - Include comprehensive package comments
@@ -178,82 +192,121 @@ When asked to explain a design pattern:
 
 ## Pattern Integration and Coupling
 
-As you progress through the tiers, integrate and compose previous patterns where applicable to demonstrate:
-- **How patterns work together** - Show real-world scenarios where multiple patterns naturally combine
-- **Pattern coupling** - Demonstrate how certain patterns complement each other architecturally
-- **Practical composition** - Use earlier patterns as building blocks in later, more complex patterns
+Patterns are rarely used in isolation. Demonstrate how patterns naturally compose and complement each other:
 
-Examples of integration opportunities:
-- **Tier 2**: Use Factory pattern with Adapter pattern to create adapters for different implementations
-- **Tier 2**: Combine Strategy and Decorator patterns to build flexible, composable behavior chains
-- **Tier 3**: Demonstrate Observer pattern with Command pattern for event-driven command systems
-- **Tier 3**: Show how Chain of Responsibility builds naturally from Decorator patterns
-- **Tier 4**: Use Options pattern (Tier 4) in Factory pattern (Tier 1) implementations for flexible construction
-- **Tier 4**: Implement Circuit Breaker using Command pattern to wrap service calls
+### Creational + Structural Integration
+- **Factory + Adapter**: Use Factory Method to create appropriate adapters for different third-party services
+- **Builder + Composite**: Build complex composite structures step-by-step
+- **Abstract Factory + Bridge**: Create families of related objects that work with different implementations
+- **Singleton + Facade**: Singleton ensures one facade instance managing subsystem access
+
+### Creational + Behavioral Integration
+- **Factory + Strategy**: Factory creates and selects appropriate strategy implementations
+- **Builder + Command**: Build complex commands with multiple parameters
+- **Prototype + Memento**: Clone objects to save/restore state efficiently
+
+### Structural + Behavioral Integration
+- **Decorator + Strategy**: Wrap strategies with decorators to add cross-cutting concerns (logging, caching)
+- **Composite + Visitor**: Apply operations across composite structures
+- **Proxy + Command**: Proxy can queue commands for remote execution
+- **Adapter + Template Method**: Adapt third-party code into template method steps
+
+### Multi-Pattern Compositions
+- **Observer + Command + Memento**: Event-driven systems with undo/redo capabilities
+- **Chain of Responsibility + Command**: Process command objects through handler chains
+- **Strategy + Factory + Singleton**: Factory selects strategies, Singleton manages factory instance
+- **Facade + Adapter + Proxy**: Simplified interface (Facade) to adapted (Adapter) remote services (Proxy)
 
 This approach helps senior engineers understand that patterns are not isolated concepts but tools that solve architectural problems when composed intelligently.
 
-## Comprehensive Design Patterns Learning Curriculum
+## Gang of Four (GOF) Design Patterns Curriculum
 
-This curriculum organizes 19 essential design patterns into four progressive tiers, each building upon the previous. This approach ensures mastery of foundational patterns before advancing to more complex architectural decisions.
+This curriculum covers all 23 classic GOF design patterns, organized by their fundamental purpose. Each pattern is implemented in Go with idiomatic examples and comprehensive documentation.
 
-### Tier 1: Essential Go Patterns (Start Here)
+### Creational Patterns (5 patterns)
 
-These patterns align naturally with Go's idioms and philosophy. You'll use them daily in production code.
+Creational patterns abstract the object instantiation process, making systems independent of how objects are created, composed, and represented.
 
-1. **Strategy Pattern** - Go's interface system makes this pattern incredibly natural. Learn how implicit interface satisfaction creates flexible, testable code without ceremony.
+1. **Singleton** - Ensures a class has only one instance and provides a global access point. Essential for managing shared resources (database pools, configuration, loggers). In Go, use `sync.Once` for thread-safe lazy initialization or package-level variables for eager initialization.
 
-2. **Factory Pattern** - Constructor functions are ubiquitous in Go. Understand factory pattern for robust initialization logic, dependency management, and configuration handling.
+2. **Factory Method** - Defines an interface for creating objects but lets functions decide which concrete type to instantiate. Ubiquitous in Go through constructor functions (`New...()`). Critical for runtime type selection, plugin systems, and decoupling client code from concrete types.
 
-3. **Builder Pattern** - When structs have many optional fields or complex initialization, the builder pattern provides clean, readable construction. Essential since Go lacks method overloading.
+3. **Abstract Factory** - Provides an interface for creating families of related or dependent objects without specifying concrete classes. Use when you need to create coordinated sets of objects (UI themes, cross-platform libraries, database drivers for different vendors).
 
-4. **Decorator Pattern** - Go's function types and closures make decorators elegant for middleware, logging, metrics, and cross-cutting concerns. Fundamental for HTTP handlers and data pipelines.
+4. **Builder** - Separates complex object construction from representation, allowing the same construction process to create different representations. Essential in Go since there's no method overloading. Perfect for objects with many optional parameters or complex initialization sequences.
 
-5. **Singleton Pattern** - Understand managing shared resources like database connections, configuration, and caches. Explore both `sync.Once` and init-based approaches.
+5. **Prototype** - Creates new objects by cloning existing instances rather than creating from scratch. Useful when object creation is expensive or complex. In Go, implement through Clone() methods or copy constructors.
 
-### Tier 2: Structural Patterns (Build Upon Fundamentals)
+### Structural Patterns (7 patterns)
 
-These patterns help organize larger codebases and manage complexity as systems grow.
+Structural patterns explain how to compose classes and objects to form larger structures while keeping them flexible and efficient.
 
-6. **Adapter Pattern** - Critical for integrating third-party libraries and creating stable internal APIs. Go's interfaces make adapters particularly elegant.
+6. **Adapter** - Converts one interface into another that clients expect, making incompatible interfaces work together. Critical for third-party library integration, legacy code modernization, and maintaining stable internal APIs. Go's interfaces make this pattern particularly elegant.
 
-7. **Proxy Pattern** - Essential for caching layers, access control, lazy initialization, and remote service calls. Crucial for distributed systems.
+7. **Bridge** - Separates abstraction from implementation so they can vary independently. Use when you want to avoid permanent binding between abstraction and implementation, or when both need to be extended through subclassing.
 
-8. **Composite Pattern** - Work with tree structures and hierarchical data by treating individual objects and compositions uniformly through Go's interfaces.
+8. **Composite** - Composes objects into tree structures to represent part-whole hierarchies. Lets clients treat individual objects and compositions uniformly. Perfect for file systems, UI component trees, organizational hierarchies, and any recursive data structures.
 
-9. **Facade Pattern** - As systems grow complex, facades provide simplified interfaces to subsystems. Vital for maintaining clean architectural boundaries.
+9. **Decorator** - Attaches additional responsibilities to objects dynamically without affecting other objects. Go's function types and closures make decorators elegant. Fundamental for middleware, logging, metrics, caching, and HTTP handler chains.
 
-### Tier 3: Behavioral Patterns (Advanced Communication)
+10. **Facade** - Provides a simplified, unified interface to a complex subsystem. Essential as systems grow to maintain clean architectural boundaries, reduce coupling, and hide complexity from clients.
 
-These patterns focus on how objects interact and communicate in sophisticated systems.
+11. **Flyweight** - Uses sharing to support large numbers of fine-grained objects efficiently by sharing common state. Useful for rendering systems, text editors (sharing character objects), game development (reusing terrain textures).
 
-10. **Observer Pattern** - Go's channels and goroutines enable powerful event-driven architectures. Build reactive systems and implement pub-sub mechanisms.
+12. **Proxy** - Provides a surrogate or placeholder for another object to control access to it. Critical for virtual proxies (lazy loading), protection proxies (access control), remote proxies (RPC), and smart references (caching, reference counting).
 
-11. **Command Pattern** - Perfect for undo/redo, job queues, transaction management, and request handling. Shines when combined with goroutines.
+### Behavioral Patterns (11 patterns)
 
-12. **Chain of Responsibility** - Middleware pipelines, request processing chains, and validation flows benefit from this pattern. Particularly useful in web applications.
+Behavioral patterns characterize how classes and objects interact and distribute responsibility, focusing on communication between objects.
 
-13. **Template Method Pattern** - While Go lacks inheritance, achieve similar benefits through composition and interfaces to define algorithmic skeletons.
+13. **Chain of Responsibility** - Passes requests along a chain of handlers where each handler decides either to process the request or pass it to the next handler. Excellent for middleware pipelines, validation chains, event bubbling, and request processing in web frameworks.
 
-14. **State Pattern** - When objects change behavior based on internal state (connections, workflows, game states), this pattern provides clean state management.
+14. **Command** - Encapsulates a request as an object, allowing you to parameterize clients with different requests, queue requests, and support undoable operations. Perfect for job queues, transaction systems, macro recording, and undo/redo functionality.
 
-### Tier 4: Concurrency and Advanced Patterns (Go-Specific Excellence)
+15. **Interpreter** - Defines a grammatical representation for a language and provides an interpreter to process sentences in that language. Use for domain-specific languages (DSLs), query languages, configuration parsers, and expression evaluators.
 
-These patterns leverage Go's unique concurrency primitives and are essential for high-performance systems.
+16. **Iterator** - Provides a way to access elements of a collection sequentially without exposing its underlying representation. In Go, this is often implemented through channels, range-based iteration, or explicit iterator types.
 
-15. **Pipeline Pattern** - Go's channels enable beautiful pipeline architectures for data processing. Fundamental for building scalable, concurrent data transformations.
+17. **Mediator** - Defines an object that encapsulates how a set of objects interact, promoting loose coupling by keeping objects from referring to each other explicitly. Useful for complex UI interactions, chat room servers, air traffic control systems.
 
-16. **Fan-Out/Fan-In Pattern** - Distribute work across multiple goroutines and aggregate results. Critical for parallel processing and maximizing throughput.
+18. **Memento** - Captures and externalizes an object's internal state so it can be restored later, without violating encapsulation. Essential for undo/redo, snapshots, transaction rollback, and game save states.
 
-17. **Worker Pool Pattern** - Manage a fixed number of goroutines processing tasks from a queue. Essential for rate limiting and resource management.
+19. **Observer** - Defines a one-to-many dependency between objects so when one object changes state, all dependents are notified. Go's channels and goroutines make this particularly powerful. Critical for event systems, reactive programming, pub-sub architectures, and model-view separation.
 
-18. **Circuit Breaker Pattern** - Protect services from cascading failures when calling external dependencies. Non-negotiable for resilient distributed systems.
+20. **State** - Allows an object to alter its behavior when its internal state changes, appearing to change its class. Perfect for state machines, connection management (connected/disconnected), order processing workflows, and game character states.
 
-19. **Options Pattern (Functional Options)** - A Go-specific pattern using variadic functions and closures for clean API design with optional parameters. Idiomatic in the Go community.
+21. **Strategy** - Defines a family of algorithms, encapsulates each one, and makes them interchangeable. Go's interface system makes this pattern incredibly natural. Use for sorting algorithms, compression algorithms, payment processing, validation rules, and pricing strategies.
+
+22. **Template Method** - Defines the skeleton of an algorithm in a base operation, deferring some steps to subclasses. While Go lacks inheritance, achieve similar benefits through composition and interfaces. Useful for frameworks, data processing pipelines, and algorithmic skeletons.
+
+23. **Visitor** - Represents an operation to be performed on elements of an object structure, letting you define new operations without changing the classes of elements. Useful for AST traversal, reporting operations, serialization, and operations on composite structures.
 
 ### Recommended Learning Sequence
 
-- Start with Tier 1 and build two to three small projects implementing those patterns before progressing
-- The hands-on experience will cement your understanding
-- Progress through subsequent tiers, always connecting new patterns back to real problems you've encountered
-- For each pattern, expect detailed explanations including: the problem it solves, Go-idiomatic implementation, visual schemas, multiple use cases with different scenarios, and guidance on when to use versus avoid the pattern
+**Phase 1 - Foundations (Start Here):**
+- Singleton, Factory Method, Strategy, Adapter
+- These are the most commonly used patterns and form the foundation
+
+**Phase 2 - Essential Extensions:**
+- Builder, Decorator, Observer, Command
+- Build on Phase 1 knowledge with more sophisticated patterns
+
+**Phase 3 - Structural Sophistication:**
+- Composite, Facade, Proxy, Bridge
+- Master structural organization and relationships
+
+**Phase 4 - Behavioral Mastery:**
+- State, Chain of Responsibility, Template Method, Mediator
+- Advanced communication and responsibility distribution
+
+**Phase 5 - Complete the Collection:**
+- Abstract Factory, Prototype, Flyweight, Iterator, Memento, Interpreter, Visitor
+- Specialized patterns for specific use cases
+
+### Learning Approach
+
+- **Understand the Problem First**: Each pattern solves a specific problem. Understand the problem before learning the solution.
+- **Go-Idiomatic Implementation**: Focus on how Go's features (interfaces, embedding, closures, channels) make patterns more elegant.
+- **Real-World Context**: Every pattern includes practical examples from actual software systems.
+- **When NOT to Use**: Understanding anti-patterns is as important as understanding patterns.
+- **Pattern Composition**: Learn how patterns work together to solve complex architectural challenges.
